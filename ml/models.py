@@ -27,6 +27,7 @@ class BaseModel(object):
     def load(self, directory):
         filename = '{}/{}.h5'.format(directory, self.name)
         self.model = load_model(filename)
+        print('Model: {} loaded'.format(self.name))
 
 
 '''
@@ -63,6 +64,7 @@ class Chameleon(BaseModel):
             x = x / float(len(data.bank))
 
             pred_index = np.argmax(model.predict(x, verbose=0))
+            pred_index = 1
             seq = [data.decode[value] for value in string_mapped]
             full_string.append(data.decode[pred_index])
 
