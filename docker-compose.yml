@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+
+  flask:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      FLASK_APP: entry.py
+      FLASK_DEBUG: 1
+      LOG_TO_STDOUT: 1
+    ports:
+      - 5000:5000
+    restart: always
+    volumes:
+      - "./app:/home/flask_app/app"
+      - "./data:/home/flask_app/data"
+      - "./ml:/home/flask_app/ml"
+      - "./models:/home/flask_app/models"
