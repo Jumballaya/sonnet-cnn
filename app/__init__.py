@@ -2,9 +2,7 @@
 Flask Application Entry
 '''
 from flask import Flask, request, current_app
-import tensorflow as tf
 from app.config import Config
-from ml import sonnet_model
 
 
 '''
@@ -20,9 +18,7 @@ def create_app(config_class=Config):
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
 
-    graph = tf.get_default_graph()
-    model = sonnet_model(load=True)
-    app.model = model
-    app.graph = graph
+    from app.sonnet import bp as sonnet_bp
+    app.register_blueprint(sonnet_bp, url_prefix='/sonnet')
 
     return app

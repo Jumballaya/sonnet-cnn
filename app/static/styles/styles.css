@@ -1,4 +1,8 @@
 /** General **/
+* {
+  box-sizing: border-box;
+}
+
 html, body {
   padding: 0;
   margin: 0;
@@ -14,9 +18,9 @@ html, body {
 
 .header__nav {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  padding: 0;
+  padding: 32px;
   margin: 0;
   list-style: none;
 }
@@ -24,6 +28,7 @@ html, body {
 .header__nav--item {
   padding: 0;
   padding-right: 8px;
+  padding-bottom: 16px;
   font-family: sans-serif;
 }
 
@@ -37,16 +42,33 @@ html, body {
   color: red;
 }
 
-.header__nav--item h2,
-.header__nav--item h3 {
+.header__nav--item h1,
+.header__nav--item h2 {
   padding: 0;
   margin: 0;
+}
+
+@media (min-width: 480px) {
+  .header__nav {
+    flex-direction: row;
+  }
+
+  .header__nav--item {
+    padding-bottom: 0;
+  }
+}
+
+@media (min-width: 960px) {
+  .header {
+    padding: 0;
+  }
 }
 
 /** Base Page **/
 .page {
   margin: 0;
   padding: 64px 32px;
+  min-height: 70vh;
 }
 
 .container {
@@ -58,7 +80,6 @@ html, body {
 @media (min-width: 960px) {
   .page {
     padding: 64px 0;
-    min-height: 70vh;
   }
 
   .container {
@@ -70,7 +91,7 @@ html, body {
 /** Footer **/
 .footer {
   width: 100%;
-  padding: 24px 0;
+  padding: 32px 0;
   background: #efefef;
 }
 
@@ -106,6 +127,10 @@ html, body {
 }
 
 @media (min-width: 480px) {
+  .footer {
+    padding: 32px;
+  }
+
   .footer__links {
     flex-direction: row;
     justify-content: flex-start;
