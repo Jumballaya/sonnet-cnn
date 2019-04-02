@@ -14,10 +14,10 @@ COPY app app
 COPY ml ml
 COPY models models
 COPY data data
-COPY entry.py boot.sh ./
+COPY boot.sh ./
 RUN chmod +x boot.sh
 
-ENV FLASK_APP entry.py
+ENV FLASK_APP app/__init__.py
 
 RUN chown -R flask_app:flask_app ./
 USER flask_app

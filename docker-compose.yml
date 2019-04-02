@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      FLASK_APP: entry.py
+      FLASK_APP: app/__init__.py
       FLASK_DEBUG: 1
       LOG_TO_STDOUT: 1
     ports:
