@@ -14,7 +14,7 @@ services:
       - 5000:5000
     restart: always
     volumes:
-      - "./app:/home/flask_app/app"
-      - "./data:/home/flask_app/data"
-      - "./ml:/home/flask_app/ml"
-      - "./models:/home/flask_app/models"
+      - "../app:/home/flask_app/app"
+      - "../data:/home/flask_app/data"
+      - "../ml:/home/flask_app/ml"
+      - "../models:/home/flask_app/models"
