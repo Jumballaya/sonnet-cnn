@@ -1,6 +1,4 @@
 import click
-from cli.sonnet import sonnet
-from cli.deploy import deploy
 
 APP_VERSION = '0.0.1'
 CLI_VERSION = '0.0.1'
@@ -20,6 +18,6 @@ def version():
   print("Application Version: {}".format(APP_VERSION))
   print("CLI Version: {}".format(CLI_VERSION))
 
-
-cli.add_command(sonnet)
-cli.add_command(deploy)
+from cli.sonnet import sonnet
+from cli.deploy import deploy
+from cli.dev import dev

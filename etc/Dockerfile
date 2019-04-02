@@ -14,7 +14,7 @@ COPY app app
 COPY ml ml
 COPY models models
 COPY data data
-COPY boot.sh ./
+COPY etc/boot.sh ./
 RUN chmod +x boot.sh
 
 ENV FLASK_APP app/__init__.py

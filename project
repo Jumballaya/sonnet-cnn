@@ -1,4 +1,12 @@
 #!venv/bin/python
+'''
+
+    MAIN PROJECT ENTRY
+
+
+    the entire project from end-to-end is managed using this CLI
+
+'''
 from cli import cli
 
 if __name__ == '__main__':
