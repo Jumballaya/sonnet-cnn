@@ -2,6 +2,7 @@ import random
 import numpy as np
 from keras.models import Sequential, load_model
 from keras.layers import Dense, Dropout, LSTM
+from keras.optimizers import Adam
 
 '''
 Generic Base Model
@@ -93,5 +94,6 @@ class Classifier(BaseModel):
             features = self.data.features
             labels = self.data.labels
             model = Sequential()
-            model.compile(loss='categorical_crossentropy', optimizer='adam')
+            model.add(Dense(labels.shape[1], input_dim=features.shape[1], activation='sigmoid'))
+            model.compile(Adam(lr=0.05), 'binary_crossentropy', metrics=['accuracy'])
             self.model = model

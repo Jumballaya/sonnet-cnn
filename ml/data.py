@@ -1,6 +1,11 @@
 import numpy as np
 from keras.utils import np_utils
 
+class Data(object):
+    def __init__(self, features, labels):
+        self.features = features
+        self.labels = labels
+
 class TextData(object):
     def __init__(self, path, focus='letter', splitText=False, depth=500):
         if focus != 'word': focus = 'letter'
@@ -27,7 +32,8 @@ class TextData(object):
         if self.focus == 'letter':
             self.bank = sorted(list(set(self.text)))
         else:
-            self.bank = sorted(list(set((words.lower().split(" ")))))
+            words = self.text.lower().split(" ")
+            self.bank = sorted(list(set(words)))
 
         self.decode = { n: i for n, i in enumerate(self.bank) }
         self.encode = { i: n for n, i in enumerate(self.bank) }
