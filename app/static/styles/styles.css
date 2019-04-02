@@ -1,3 +1,124 @@
+/** General **/
+html, body {
+  padding: 0;
+  margin: 0;
+  color: #333;
+}
+
+/** Header **/
+.header {
+  width: 100%;
+  padding: 24px 0;
+  background: #efefef;
+}
+
+.header__nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.header__nav--item {
+  padding: 0;
+  padding-right: 8px;
+  font-family: sans-serif;
+}
+
+.header__nav--item a {
+  color: #333;
+  text-decoration: none;
+  transition: color 250ms ease-in-out;
+}
+
+.header__nav--item a:hover {
+  color: red;
+}
+
+.header__nav--item h2,
+.header__nav--item h3 {
+  padding: 0;
+  margin: 0;
+}
+
+/** Base Page **/
+.page {
+  margin: 0;
+  padding: 64px 32px;
+}
+
+.container {
+  margin: 0 auto;
+  padding: 0;
+  max-width: 960px;
+}
+
+@media (min-width: 960px) {
+  .page {
+    padding: 64px 0;
+    min-height: 70vh;
+  }
+
+  .container {
+    padding: 0 32px;
+  }
+}
+
+
+/** Footer **/
+.footer {
+  width: 100%;
+  padding: 24px 0;
+  background: #efefef;
+}
+
+.footer__links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.footer__links--item {
+  padding: 6px 8px;
+  font-family: sans-serif;
+}
+
+.footer__links--item a {
+  color: #333;
+  text-decoration: none;
+  transition: color 250ms ease-in-out;
+}
+
+.footer__links--item a:hover {
+  color: red;
+}
+
+.footer__links--item h2,
+.footer__links--item h3 {
+  padding: 0;
+  margin: 0;
+}
+
+@media (min-width: 480px) {
+  .footer__links {
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  .footer__links--item {
+    padding: 0;
+    padding-right: 8px;
+  }
+}
+
+
+/** Sonnet Page **/
 .sonnet-text {
   max-width: 480px;
   line-height: 1.4;
