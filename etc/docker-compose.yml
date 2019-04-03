@@ -27,7 +27,7 @@ services:
       - flask
     environment:
       NODE_ENV: development
-      API_BASE: http://localhost:5000
+      REACT_APP_API_BASE: http://localhost:5000
     links:
       - flask
     ports:
