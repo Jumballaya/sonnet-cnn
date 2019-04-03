@@ -23,8 +23,13 @@ services:
     build:
       context: ../
       dockerfile: etc/react.Dockerfile
+    depends_on:
+      - flask
     environment:
       NODE_ENV: development
+      API_BASE: http://localhost:5000
+    links:
+      - flask
     ports:
       - 3000:3000
     restart: always

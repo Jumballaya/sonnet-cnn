@@ -2,6 +2,7 @@
 Flask Application Entry
 '''
 from flask import Flask, request, current_app
+from flask_cors import CORS
 from app.config import Config
 
 
@@ -21,4 +22,5 @@ def create_app(config_class=Config):
     from app.sonnet import bp as sonnet_bp
     app.register_blueprint(sonnet_bp, url_prefix='/api/sonnet')
 
+    CORS(app)
     return app
