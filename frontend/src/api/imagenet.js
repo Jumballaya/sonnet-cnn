@@ -17,7 +17,9 @@ const postImage = img => {
 
 const API = {
   predict: img =>
-    fetch(makePath('predict'), postImage(img)).then(res => res.json()),
+    fetch(makePath('predict'), postImage(img))
+      .then(res => res.json())
+      .then(res => ({ data: img, predictions: res.predictions })),
 };
 
 export default API;

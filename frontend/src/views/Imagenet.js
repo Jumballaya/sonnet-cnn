@@ -1,48 +1,25 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Grid } from 'grommet';
-import { fetchSonnet } from '../store/actions/sonnet';
+import { fetchImagenet } from '../store/actions/imagenet';
 import API from '../api/imagenet';
 import ImageCard from '../components/ImageCard/ImageCard';
 
 class Imagenet extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      images: [],
-    };
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.addImage = this.addImage.bind(this);
-  }
 
-  addImage(res, img) {
-    if (res.success) {
-      const { predictions } = res;
-      this.setState({
-        images: [
-          ...this.state.images,
-          {
-            data: img,
-            predictions,
-          },
-        ],
-      });
-    }
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleSubmit(e) {
     e.preventDefault();
     const files = Array.from(this.uploadInput.files);
-    files.map(img =>
-      API.predict(img).then(
-        res => this.addImage(res, img),
-        err => console.log(err)
-      )
-    );
+    files.map(img => this.props.getImagenet(img));
   }
 
   renderImages() {
-    return this.state.images.map(img => (
+    return this.props.images.map(img => (
       <ImageCard {...img} key={img.data.name + Math.random() + Date.now()} />
     ));
   }
@@ -71,9 +48,9 @@ class Imagenet extends React.Component {
   }
 }
 
-const stateToProps = state => state.sonnet;
+const stateToProps = state => state.imagenet;
 const dispatchToProps = dispatch => ({
-  getSonnet: () => dispatch(fetchSonnet()),
+  getImagenet: img => dispatch(fetchImagenet(img)),
 });
 
 export default connect(

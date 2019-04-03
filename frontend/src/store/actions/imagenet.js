@@ -18,9 +18,9 @@ const fetchImagenetFailure = error => ({
   payload: error,
 });
 
-export const fetchImagenet = () => dispatch => {
+export const fetchImagenet = img => dispatch => {
   dispatch(fetchImagenetStart());
-  API.predict().then(
+  API.predict(img).then(
     res => dispatch(fetchImagenetSuccess(res)),
     err => dispatch(fetchImagenetFailure(err))
   );
