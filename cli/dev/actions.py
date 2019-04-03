@@ -13,7 +13,7 @@ def start():
         raise RuntimeError('Could not launch docker-compose')
 
 def build():
-    if os.system('docker-compose -f build'):
+    if os.system('docker-compose -f etc/docker-compose.yml build'):
         raise RuntimeError('Could build docker-compose file')
 
 actions = {

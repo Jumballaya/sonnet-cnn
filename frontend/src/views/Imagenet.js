@@ -1,10 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Grid } from 'grommet';
 import { fetchSonnet } from '../store/actions/sonnet';
 import API from '../api/imagenet';
-import Image from '../components/Image/Image';
-
-import './imagenet.styles.css';
+import ImageCard from '../components/ImageCard/ImageCard';
 
 class Imagenet extends React.Component {
   constructor(props) {
@@ -44,16 +43,7 @@ class Imagenet extends React.Component {
 
   renderImages() {
     return this.state.images.map(img => (
-      <div className="image">
-        <Image src={img.data} />
-        <ul key={img.data.name}>
-          {img.predictions.map(p => (
-            <li key={p.label}>
-              {p.label} -- {p.probability}
-            </li>
-          ))}
-        </ul>
-      </div>
+      <ImageCard {...img} key={img.data.name} />
     ));
   }
 
@@ -73,7 +63,9 @@ class Imagenet extends React.Component {
           />
           <button>Predict</button>
         </form>
-        <div className="grid">{this.renderImages()}</div>
+        <Grid columns="medium" rows="medium">
+          {this.renderImages()}
+        </Grid>
       </div>
     );
   }

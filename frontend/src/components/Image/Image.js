@@ -1,4 +1,5 @@
 import React from 'react';
+import { Image as Img } from 'grommet';
 
 const dataToString = imagedata => {
   const canvas = document.createElement('canvas');
@@ -42,7 +43,7 @@ class Image extends React.Component {
     return this.state.src === '' ? (
       <h1>Loading Image</h1>
     ) : (
-      <img src={this.state.src} />
+      <Img fit={this.props.fit || 'cover'} src={this.state.src} />
     );
   }
 }

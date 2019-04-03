@@ -1,5 +1,8 @@
 import React from 'react';
 import { Route, Switch } from 'react-router';
+
+import './styles/main.css';
+
 import Layout from './views/Layout';
 import Home from './views/Home';
 import Sonnet from './views/Sonnet';
