@@ -19,6 +19,6 @@ def create_app(config_class=Config):
     app.register_blueprint(main_bp)
 
     from app.sonnet import bp as sonnet_bp
-    app.register_blueprint(sonnet_bp, url_prefix='/sonnet')
+    app.register_blueprint(sonnet_bp, url_prefix='/api/sonnet')
 
     return app

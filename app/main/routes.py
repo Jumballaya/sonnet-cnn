@@ -1,12 +1,16 @@
 '''
 Main Routes
 '''
-from flask import render_template
+from flask import jsonify
 from app.main import bp
 
 
-
 @bp.route('/')
-@bp.route('/index')
 def index():
-    return render_template('main/index.html', title='Home')
+    return jsonify({
+        'apis': {
+            'sonnet': {
+                'generate': '/api/sonnet/generate'
+            },
+        },
+    })
