@@ -2,6 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { fetchSonnet } from '../store/actions/sonnet';
 import API from '../api/imagenet';
+import Image from '../components/Image/Image';
+
+import './imagenet.styles.css';
 
 class Imagenet extends React.Component {
   constructor(props) {
@@ -14,7 +17,6 @@ class Imagenet extends React.Component {
   }
 
   addImage(res, img) {
-    console.log(res);
     if (res.success) {
       const { predictions } = res;
       this.setState({
@@ -31,22 +33,27 @@ class Imagenet extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const img = this.uploadInput.files[0];
-    API.predict(img).then(
-      res => this.addImage(res, img),
-      err => console.log(err)
+    const files = Array.from(this.uploadInput.files);
+    files.map(img =>
+      API.predict(img).then(
+        res => this.addImage(res, img),
+        err => console.log(err)
+      )
     );
   }
 
   renderImages() {
     return this.state.images.map(img => (
-      <ul key={img.data.name}>
-        {img.predictions.map(p => (
-          <li key={p.label}>
-            {p.label} -- {p.probability}
-          </li>
-        ))}
-      </ul>
+      <div className="image">
+        <Image src={img.data} />
+        <ul key={img.data.name}>
+          {img.predictions.map(p => (
+            <li key={p.label}>
+              {p.label} -- {p.probability}
+            </li>
+          ))}
+        </ul>
+      </div>
     ));
   }
 
@@ -59,13 +66,14 @@ class Imagenet extends React.Component {
             type="file"
             name="image"
             accept="image/png, image/jpg, image/jpeg"
+            multiple
             ref={ref => {
               this.uploadInput = ref;
             }}
           />
           <button>Predict</button>
         </form>
-        <div>{this.renderImages()}</div>
+        <div className="grid">{this.renderImages()}</div>
       </div>
     );
   }
