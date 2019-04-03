@@ -10,6 +10,11 @@ from app.imagenet.image import prepare_image
 def predict():
     data = { "success": False }
 
+    print('\n\n')
+    print('files: ')
+    print(request.files)
+    print('\n\n')
+
     if request.method == 'POST':
         if request.files.get('image'):
             image = request.files["image"].read()
