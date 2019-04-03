@@ -5,8 +5,6 @@ from cli.sonnet.actions import actions
 help_txt = """
 Usage: project sonnet [OPTIONS] SUBCOMMAND
 
-Deployment options
-
 Options:
   --help Show this message and exit.
 

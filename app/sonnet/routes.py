@@ -1,5 +1,5 @@
 from flask import jsonify
-from app.sonnet import bp, graph, model
+from app.sonnet import bp, model, graph
 
 
 @bp.route('/generate')

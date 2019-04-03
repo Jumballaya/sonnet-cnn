@@ -1,8 +1,39 @@
 import random
 import numpy as np
+import tensorflow as tf
 from keras.models import Sequential, load_model
 from keras.layers import Dense, Dropout, LSTM
 from keras.optimizers import Adam
+
+'''
+Flask Model Wrapper
+'''
+class FlaskModel(object):
+
+    def __init__(self, name, model):
+        self.name = name
+        self.graph = tf.Graph()
+        with self.graph.as_default():
+            self.model = model
+            self.session = tf.Session()
+            self.saver = tf.train.Saver()
+            self.saver.restore(self.session, "models/{}.h5".format(self.name))
+
+    def save(self):
+        self.session.run(tf.global_variables_initialize())
+        self.saver.save(self.session, "models/{}.h5".format(self.name))
+
+    def predict(self, input_vec):
+        result = self.session.run(
+            self.model.output_node,
+            feed_dict={
+                self.model.input_placeholder: input_vec,
+            })
+
+        return result
+
+
+
 
 '''
 Generic Base Model

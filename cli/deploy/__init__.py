@@ -5,8 +5,6 @@ from cli.deploy.actions import actions
 help_txt = """
 Usage: project deploy [OPTIONS] SUBCOMMAND
 
-Deployment options
-
 Options:
   --help Show this message and exit.
 

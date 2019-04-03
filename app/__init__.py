@@ -22,5 +22,9 @@ def create_app(config_class=Config):
     from app.sonnet import bp as sonnet_bp
     app.register_blueprint(sonnet_bp, url_prefix='/api/sonnet')
 
+    from app.imagenet import bp as imagenet_bp
+    app.register_blueprint(imagenet_bp, url_prefix='/api/imagenet')
+
+
     CORS(app)
     return app
