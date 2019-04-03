@@ -1,5 +1,6 @@
 import click
 from cli import cli
+from cli.deploy.actions import actions
 
 help_txt = """
 Usage: project deploy [OPTIONS] SUBCOMMAND
@@ -24,16 +25,5 @@ def deploy(subcommand):
     """
     sc = subcommand.lower()
 
-    if sc == 'frontend':
-        click.secho("Deploy frontend", fg="green")
-
-    elif sc == 'models':
-        click.secho("Deploy models", fg="green")
-
-    elif sc == 'services':
-        click.secho("Deploy services", fg="green")
-
-    elif sc == 'database':
-        click.secho("Deploy DB changes", fg="green")
-
+    if sc in actions: actions[sc]()
     else: print(help_txt)

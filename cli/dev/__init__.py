@@ -1,6 +1,6 @@
 import click
 from cli import cli
-from cli.dev.actions import run
+from cli.dev.actions import actions
 
 help_txt = """
 Usage: project dev [OPTIONS] SUBCOMMAND
@@ -23,16 +23,5 @@ def dev(subcommand):
     Deployment options
     """
     sc = subcommand.lower()
-
-    if sc == 'frontend':
-        click.secho("Dev frontend", fg="green")
-
-    elif sc == 'services':
-        click.secho("Dev services", fg="green")
-
-    elif sc == 'run':
-        click.secho("Starting development services.....", fg="green")
-        run()
-
-
+    if sc in actions: actions[sc]()
     else: print(help_txt)

@@ -8,3 +8,9 @@ def build():
 def generate():
     model = sonnet_model(load=True)
     print(model.generate(10))
+
+
+actions = {
+    'build': build,
+    'generate': generate,
+}
