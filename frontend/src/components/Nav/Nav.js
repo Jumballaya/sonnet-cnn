@@ -19,25 +19,19 @@ const Nav = props => (
     </Box>
     <Box justify="center" align="center" pad="small">
       <Text level={4}>
-        <Anchor href="#">
-          <Link to="/" style={linkStyle}>
-            Back Home
-          </Link>
-        </Anchor>
+        <Link to="/" style={linkStyle}>
+          <Text>Back Home</Text>
+        </Link>
       </Text>
       <Text level={4}>
-        <Anchor href="#">
-          <Link to="/sonnet" style={linkStyle}>
-            Sonnet Generator
-          </Link>
-        </Anchor>
+        <Link to="/sonnet" style={linkStyle}>
+          <Text>Sonnet Generator</Text>
+        </Link>
       </Text>
       <Text level={4}>
-        <Anchor href="#">
-          <Link to="/imagenet" style={linkStyle}>
-            Imagenet
-          </Link>
-        </Anchor>
+        <Link to="/imagenet" style={linkStyle}>
+          <Text>Imagenet</Text>
+        </Link>
       </Text>
     </Box>
   </Box>

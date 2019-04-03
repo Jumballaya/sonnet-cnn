@@ -18,7 +18,6 @@ const fileToString = file =>
   });
 
 const parseSrc = async src => {
-  console.log(src, typeof src, src instanceof File);
   if (typeof src === 'string') return src;
   if (src instanceof ImageData) return dataToString(src);
   if (src instanceof File) return await fileToString(src);

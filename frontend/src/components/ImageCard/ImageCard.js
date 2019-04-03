@@ -1,17 +1,33 @@
 import React from 'react';
-import { Box } from 'grommet';
+import { Box, Meter, Text } from 'grommet';
 import Image from '../Image/Image';
 
+const Probility = props => (
+  <Box direction="row" align="center" justify="between" pad="xsmall">
+    <Box direction="column" align="start">
+      <Text>{props.label}</Text>
+      <Meter
+        type="bar"
+        background="white"
+        size="small"
+        thickness="small"
+        values={[{ value: props.probability * 100 }]}
+      />
+    </Box>
+    <Text>{Math.round(props.probability * 100)}%</Text>
+  </Box>
+);
+
 const ImageCard = props => (
-  <Box pad="small">
+  <Box animation="fadeIn" pad="small" background="light-1">
     <Image src={props.data} />
-    <ul key={props.data.name}>
+    <Box pad="small">
       {props.predictions.map(p => (
-        <li key={p.label}>
-          {p.label} -- {p.probability}
-        </li>
+        <Box key={p.label + props.data.name}>
+          <Probility {...p} />
+        </Box>
       ))}
-    </ul>
+    </Box>
   </Box>
 );
 

@@ -43,7 +43,7 @@ class Imagenet extends React.Component {
 
   renderImages() {
     return this.state.images.map(img => (
-      <ImageCard {...img} key={img.data.name} />
+      <ImageCard {...img} key={img.data.name + Math.random() + Date.now()} />
     ));
   }
 
@@ -63,7 +63,7 @@ class Imagenet extends React.Component {
           />
           <button>Predict</button>
         </form>
-        <Grid columns="medium" rows="medium">
+        <Grid gap="small" columns="medium" rows="medium">
           {this.renderImages()}
         </Grid>
       </div>
