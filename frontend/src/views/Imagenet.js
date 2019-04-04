@@ -15,15 +15,15 @@ class Imagenet extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const files = Array.from(this.uploadInput.files);
+    const files = Array.from(e.target.files);
     files.map(img => this.props.getImagenet(img));
   }
 
   renderImages() {
     const key = name => (name || 'image-card') + Math.random() + Date.now();
-    return this.props.images.map(img => (
-      <ImageCard {...img} key={key(img.data.name)} />
-    ));
+    return this.props.images
+      .reverse()
+      .map(img => <ImageCard {...img} key={key(img.data.name)} />);
   }
 
   handleImg(img) {
@@ -31,22 +31,21 @@ class Imagenet extends React.Component {
   }
 
   render() {
+    const mobile =
+      typeof window.orientation !== 'undefined' ||
+      navigator.userAgent.indexOf('IEMobile') !== -1;
     return (
       <div>
         <h1>Imagenet</h1>
-        <form onSubmit={this.handleSubmit}>
-          <input
-            type="file"
-            name="image"
-            accept="image/png, image/jpg, image/jpeg"
-            multiple
-            ref={ref => {
-              this.uploadInput = ref;
-            }}
-          />
-          <button>Predict</button>
-        </form>
-        <CameraComponent handleImage={this.handleImg} />
+        <input
+          type="file"
+          name="image"
+          accept="image/*"
+          capture="camera"
+          multiple
+          onChange={this.handleSubmit}
+        />
+        {mobile ? <span /> : <CameraComponent handleImage={this.handleImg} />}
         <Grid gap="small" columns="medium" rows="medium">
           {this.renderImages()}
         </Grid>
