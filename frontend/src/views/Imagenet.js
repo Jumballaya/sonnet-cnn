@@ -4,14 +4,13 @@ import { Grid } from 'grommet';
 import { fetchImagenet } from '../store/actions/imagenet';
 import API from '../api/imagenet';
 import ImageCard from '../components/ImageCard/ImageCard';
-import { Camera } from '../utils/images';
+import CameraComponent from '../components/Camera/Camera';
 
 class Imagenet extends React.Component {
   constructor(props) {
     super(props);
-
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleTakePic = this.handleTakePic.bind(this);
+    this.handleImg = this.handleImg.bind(this);
   }
 
   handleSubmit(e) {
@@ -20,17 +19,15 @@ class Imagenet extends React.Component {
     files.map(img => this.props.getImagenet(img));
   }
 
-  handleTakePic(e) {
-    e.preventDefault();
-    const c = new Camera(640, 480);
-    c.capture().then(img => this.props.getImagenet(img));
-  }
-
   renderImages() {
     const key = name => (name || 'image-card') + Math.random() + Date.now();
     return this.props.images.map(img => (
       <ImageCard {...img} key={key(img.data.name)} />
     ));
+  }
+
+  handleImg(img) {
+    this.props.getImagenet(img);
   }
 
   render() {
@@ -49,6 +46,7 @@ class Imagenet extends React.Component {
           />
           <button>Predict</button>
         </form>
+        <CameraComponent handleImage={this.handleImg} />
         <Grid gap="small" columns="medium" rows="medium">
           {this.renderImages()}
         </Grid>
