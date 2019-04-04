@@ -22,3 +22,4 @@ from cli.sonnet import sonnet
 from cli.deploy import deploy
 from cli.dev import dev
 from cli.imagenet import imagenet
+from cli.hamspam import hamspam

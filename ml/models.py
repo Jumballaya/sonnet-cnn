@@ -1,9 +1,12 @@
 import random
 import numpy as np
+import pandas as pd
 import tensorflow as tf
 from keras.models import Sequential, load_model
 from keras.layers import Dense, Dropout, LSTM
 from keras.optimizers import Adam
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.model_selection import train_test_split
 
 '''
 Flask Model Wrapper
@@ -50,7 +53,8 @@ class BaseModel(object):
     def train(self, epochs=1, batch_size=1000):
         features = self.data.features
         labels = self.data.labels
-        self.model.fit(features, labels, epochs=epochs, batch_size=batch_size)
+        history = self.model.fit(features, labels, epochs=epochs, batch_size=batch_size)
+        return history
 
     def save(self, directory):
         filename = '{}/{}.h5'.format(directory, self.name)
@@ -110,21 +114,52 @@ class Chameleon(BaseModel):
         return txt
 
 
-'''
-Multivariate Text Classifier
+class HamSpamClassifier(object):
+    def __init__(self, fp):
+        self.data = self.get_data(fp)
+        self.vectorizer = CountVectorizer(min_df=0, lowercase=False)
+        self.vectorizer.fit(self.data['text'])
+        self.features = self.vectorizer.transform(self.data['text'])
+        self.labels = self.data['category']
+        self.model = None
+        self.make_model()
 
-    Classify text as one of the given labels
-'''
-class Classifier(BaseModel):
+    def make_model(self):
+        X_train, X_test, y_train, y_test = train_test_split(self.features, self.labels, stratify=self.labels, test_size=0.2)
+        input_dim = X_train.shape[1]
+        model = Sequential()
+        model.add(Dense(10, input_dim=input_dim, activation='relu'))
+        model.add(Dense(1, activation='sigmoid'))
+        model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+        self.model = model
+        self.X_train = X_train
+        self.X_test = X_test
+        self.y_train = y_train
+        self.y_test = y_test
 
-    def __init__(self, name, data):
-        BaseModel.__init__(self, name, data)
+    def train(self):
+        history = self.model.fit(self.X_train, self.y_train, epochs=10, validation_data=(self.X_test, self.y_test), batch_size=10)
+        return history
 
-    def build(self):
-        if self.model == None:
-            features = self.data.features
-            labels = self.data.labels
-            model = Sequential()
-            model.add(Dense(labels.shape[1], input_dim=features.shape[1], activation='sigmoid'))
-            model.compile(Adam(lr=0.05), 'binary_crossentropy', metrics=['accuracy'])
-            self.model = model
+    def save(self, fp):
+        self.model.save(fp)
+
+    def load(self, fp):
+        self.model = load_model(fp)
+
+    def predict(self, sentence):
+        sentence = self.vectorizer.transform([sentence])
+        return self.model.predict(sentence)
+
+    def encode_category(self, cat):
+        if cat == 'spam': return 1
+        else: return 0
+
+    def get_data(self, fp):
+        drop_cols = ['Unnamed: 2', 'Unnamed: 3', 'Unnamed: 4']
+        df = pd.read_csv(fp, encoding='latin-1')
+        df = df.drop(labels=drop_cols, axis=1)
+        df.columns = ['category', 'text']
+        df['category'] = df['category'].apply(self.encode_category)
+        df['length'] = df['text'].apply(len)
+        return df
