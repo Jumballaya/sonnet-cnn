@@ -23,7 +23,7 @@ const ImageCard = props => (
     <Image src={props.data} />
     <Box pad="small">
       {props.predictions.map(p => (
-        <Box key={p.label + props.data.name}>
+        <Box key={p.label + (props.data.name || Math.random())}>
           <Probility {...p} />
         </Box>
       ))}
