@@ -1,0 +1,35 @@
+.fullscreen-container {
+  display: block;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  padding: 2rem;;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.fullscreen-image {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+.small {
+  cursor: pointer;
+}
+
+.loader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+
+.line-scale-party > div {
+  background-color: rgb(125, 76, 219);
+}

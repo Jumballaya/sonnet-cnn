@@ -19,7 +19,7 @@ const Probility = props => (
 );
 
 const ImageCard = props => (
-  <Box animation="fadeIn" pad="small" background="light-1">
+  <Box pad="small" background="light-1">
     <Image src={props.data} />
     <Box pad="small">
       {props.predictions.map(p => (

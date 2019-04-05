@@ -1,1 +1,10 @@
 @import "./_general.css";
+@import '~loaders.css';
+
+.loader-hidden {
+	display: none;
+}
+
+.loader-active {
+	display: block;
+}
