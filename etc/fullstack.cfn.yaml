@@ -46,9 +46,12 @@ Outputs:
   WebsiteURL:
     Value: !Join ['', ['http://', !Ref 'DNS']]
     Description: The URL of the newly created website
-  BucketName:
+  StaticBucket:
     Value: !Ref 'Static'
     Description: Name of S3 bucket to hold website content
+  ArtifactsBucket:
+    Value: !Ref 'Artifacts'
+    Description: Name of S3 bucket to hold the build artifacts
 
 Resources:
   VPC:
@@ -137,13 +140,82 @@ Resources:
 
   Server:
     Type: AWS::EC2::Instance
+    Metadata:
+      AWS::CloudFormation::Init:
+        configSets:
+          app_install:
+          - install_cfn
+          - install_app
+          - configure_app
+
+        install_cfn:
+          files:
+            /etc/cfn/cfn-hup.conf:
+              content: !Sub |
+                [main]
+                stack= ${AWS::StackId}
+                region=${AWS::Region}
+              group: root
+              mode: '000400'
+              owner: root
+            /etc/cfn/hooks.d/cfn-auto-reloader.conf:
+              content: !Sub |
+                [cfn-auto-reloader-hook]
+                triggers=post.update
+                path=Resources.Server.Metadata.AWS::CloudFormation::Init
+                action=/opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource Server --configsets app_install
+              group: root
+              mode: '000400'
+              owner: root
+          services:
+            sysvinit:
+              cfn-hup:
+                enabled: true
+                ensureRunning: true
+                files:
+                - /etc/cfn/cfn-hup.conf
+                - /etc/cfn/hooks.d/cfn-auto-reloader.conf
+
+        install_app:
+          packages:
+            yum:
+              python36: []
+              git: []
+
+        configure_app:
+          files:
+            /home/ec2-user/app.tar.gz: https://github.com/Jumballaya/sonnet-rnn/tarball/master
+          commands:
+            01_unpack_app:
+              command: mkdir /home/ec2-user/app; tar --extract --file=~/app.tar.gz --strip-components=1 --directory=/home/ec2-user/app;
+            02_install_app:
+              command:
+                cd /home/ec2-user/app && \
+                python36 -m venv venv && \
+                source venv/bin/activate && \
+                venv/bin/pip install -r requirements.txt
+            03_run_app:
+              command:
+                cd /home/ec2-user/app && \
+                source venv/bin/activate && \
+                sh etc/boot.sh
+
+
+
     Properties:
       ImageId: ami-0ff8a91507f77f867
-      InstanceType: t2.small
+      InstanceType: t2.micro
       Monitoring: false
+      KeyName: basicEC2Key
       SubnetId: !Ref SubnetA
       SecurityGroupIds:
         - !Ref SecurityGroup
+      UserData:
+        Fn::Base64: !Sub |
+           #!/bin/bash -xe
+           yum update -y aws-cfn-bootstrap
+           /opt/aws/bin/cfn-init -v --stack ${AWS::StackId} --resource Server --configsets app_install --region ${AWS::Region}
+           /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackId} --resource Server --region ${AWS::Region}
 
   Static:
     Type: AWS::S3::Bucket
@@ -153,6 +225,12 @@ Resources:
       WebsiteConfiguration:
         IndexDocument: index.html
         ErrorDocument: index.html
+
+  Artifacts:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Join ['', ['artifacts-', !Ref 'SubDomain', ., !Ref 'HostedZone']]
+      AccessControl: Private
 
   CDN:
     Type: AWS::CloudFront::Distribution
@@ -186,3 +264,4 @@ Resources:
       TTL: '900'
       ResourceRecords:
       - !GetAtt [CDN, DomainName]
+
